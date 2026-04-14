@@ -107,16 +107,17 @@ jobs:
           tap_dir="$RUNNER_TEMP/homebrew-tap"
           git clone "https://x-access-token:${HOMEBREW_TAP_GITHUB_TOKEN}@github.com/SSYCloud/homebrew-tap.git" "$tap_dir"
           ./scripts/render-homebrew-formula.sh --tag "$RELEASE_TAG" --checksums release/checksums.txt > "$tap_dir/Formula/assemble-flow.rb"
+          rm -f "$tap_dir/Formula/batchjob-cli.rb"
 
           cd "$tap_dir"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          if git diff --quiet -- Formula/assemble-flow.rb; then
+          if [[ -z "$(git status --short -- Formula/assemble-flow.rb Formula/batchjob-cli.rb)" ]]; then
             echo "Formula/assemble-flow.rb is already up to date"
             exit 0
           fi
 
-          git add Formula/assemble-flow.rb
+          git add Formula/assemble-flow.rb Formula/batchjob-cli.rb
           git commit -m "assemble-flow ${RELEASE_TAG}"
           git push origin main
