@@ -7,7 +7,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-$Repo = "SSYCloud/batchjob-agent-kit"
+$Repo = "SSYCloud/AssembleFlow"
 $ApiBase = "https://api.github.com/repos/$Repo"
 
 function Resolve-SkillDir {
@@ -65,14 +65,14 @@ $skillsAsset = "batchjob-skills.zip"
 $checksumsAsset = "checksums.txt"
 $baseUrl = "https://github.com/$Repo/releases/download/$tag"
 
-$tmpDir = Join-Path ([System.IO.Path]::GetTempPath()) ("batchjob-agent-kit-" + [System.Guid]::NewGuid().ToString("N"))
+$tmpDir = Join-Path ([System.IO.Path]::GetTempPath()) ("AssembleFlow-" + [System.Guid]::NewGuid().ToString("N"))
 New-Item -ItemType Directory -Path $tmpDir | Out-Null
 try {
   $cliZip = Join-Path $tmpDir $cliAsset
   $skillsZip = Join-Path $tmpDir $skillsAsset
   $checksumsPath = Join-Path $tmpDir $checksumsAsset
 
-  Write-Host "batchjob-agent-kit installer"
+  Write-Host "AssembleFlow installer"
   Write-Host "repo: $Repo"
   Write-Host "version: $tag"
   Write-Host "agent: $Agent"

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/SSYCloud/batchjob-agent-kit/cli/internal/cmd"
+	"github.com/SSYCloud/AssembleFlow/cli/internal/cmd"
 )
 
 func main() {

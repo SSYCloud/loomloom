@@ -46,7 +46,7 @@ jobs:
           fi
           GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} GOWORK=off \
             go build \
-              -ldflags "-X github.com/SSYCloud/batchjob-agent-kit/cli/internal/version.Version=${{ github.ref_name }}" \
+              -ldflags "-X github.com/SSYCloud/AssembleFlow/cli/internal/version.Version=${{ github.ref_name }}" \
               -o "$output_path" \
               ./cmd/batchjob-cli
       - name: Upload CLI artifact

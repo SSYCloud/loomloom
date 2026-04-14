@@ -1,4 +1,4 @@
-# batchjob-agent-kit
+# AssembleFlow
 
 Public distribution repository for:
 
@@ -39,7 +39,7 @@ export BATCHJOB_TOKEN="your-token"
 ## Install From GitHub Release
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/SSYCloud/batchjob-agent-kit/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/SSYCloud/AssembleFlow/main/install.sh | bash
 ```
 
 By default the installer downloads the latest release, installs `batchjob-cli` into `~/.local/bin`, and installs the Codex skill into `~/.codex/skills/batchjob/SKILL.md`.
@@ -49,22 +49,22 @@ On macOS/Linux, if `brew` is available, the installer prefers Homebrew for the C
 Useful flags:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/SSYCloud/batchjob-agent-kit/main/install.sh | bash -s -- --agent claude
-curl -fsSL https://raw.githubusercontent.com/SSYCloud/batchjob-agent-kit/main/install.sh | bash -s -- --no-brew
-curl -fsSL https://raw.githubusercontent.com/SSYCloud/batchjob-agent-kit/main/install.sh | bash -s -- --version v0.1.0
+curl -fsSL https://raw.githubusercontent.com/SSYCloud/AssembleFlow/main/install.sh | bash -s -- --agent claude
+curl -fsSL https://raw.githubusercontent.com/SSYCloud/AssembleFlow/main/install.sh | bash -s -- --no-brew
+curl -fsSL https://raw.githubusercontent.com/SSYCloud/AssembleFlow/main/install.sh | bash -s -- --version v0.1.0
 ```
 
 ### Windows (PowerShell)
 
 ```powershell
-irm https://raw.githubusercontent.com/SSYCloud/batchjob-agent-kit/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/SSYCloud/AssembleFlow/main/install.ps1 | iex
 ```
 
 Useful flags:
 
 ```powershell
-& ([scriptblock]::Create((irm https://raw.githubusercontent.com/SSYCloud/batchjob-agent-kit/main/install.ps1))) -Agent claude
-& ([scriptblock]::Create((irm https://raw.githubusercontent.com/SSYCloud/batchjob-agent-kit/main/install.ps1))) -Version v0.1.0
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/SSYCloud/AssembleFlow/main/install.ps1))) -Agent claude
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/SSYCloud/AssembleFlow/main/install.ps1))) -Version v0.1.0
 ```
 
 By default the PowerShell installer places `batchjob-cli.exe` under:
@@ -80,13 +80,13 @@ If that directory is not already in `PATH`, add it before using `batchjob-cli`.
 macOS / Linux:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/SSYCloud/batchjob-agent-kit/main/uninstall.sh | bash
+curl -fsSL https://raw.githubusercontent.com/SSYCloud/AssembleFlow/main/uninstall.sh | bash
 ```
 
 Windows PowerShell:
 
 ```powershell
-irm https://raw.githubusercontent.com/SSYCloud/batchjob-agent-kit/main/uninstall.ps1 | iex
+irm https://raw.githubusercontent.com/SSYCloud/AssembleFlow/main/uninstall.ps1 | iex
 ```
 
 The uninstall scripts remove the GitHub Release install and, when detected, also uninstall the Homebrew `batchjob-cli` formula so old CLI versions do not stay on your `PATH`.
@@ -94,15 +94,15 @@ The uninstall scripts remove the GitHub Release install and, when detected, also
 Useful flags:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/SSYCloud/batchjob-agent-kit/main/uninstall.sh | bash -s -- --agent claude
-curl -fsSL https://raw.githubusercontent.com/SSYCloud/batchjob-agent-kit/main/uninstall.sh | bash -s -- --cli-only
-curl -fsSL https://raw.githubusercontent.com/SSYCloud/batchjob-agent-kit/main/uninstall.sh | bash -s -- --skill-only
+curl -fsSL https://raw.githubusercontent.com/SSYCloud/AssembleFlow/main/uninstall.sh | bash -s -- --agent claude
+curl -fsSL https://raw.githubusercontent.com/SSYCloud/AssembleFlow/main/uninstall.sh | bash -s -- --cli-only
+curl -fsSL https://raw.githubusercontent.com/SSYCloud/AssembleFlow/main/uninstall.sh | bash -s -- --skill-only
 ```
 
 ```powershell
-& ([scriptblock]::Create((irm https://raw.githubusercontent.com/SSYCloud/batchjob-agent-kit/main/uninstall.ps1))) -Agent claude
-& ([scriptblock]::Create((irm https://raw.githubusercontent.com/SSYCloud/batchjob-agent-kit/main/uninstall.ps1))) -CliOnly
-& ([scriptblock]::Create((irm https://raw.githubusercontent.com/SSYCloud/batchjob-agent-kit/main/uninstall.ps1))) -SkillOnly
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/SSYCloud/AssembleFlow/main/uninstall.ps1))) -Agent claude
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/SSYCloud/AssembleFlow/main/uninstall.ps1))) -CliOnly
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/SSYCloud/AssembleFlow/main/uninstall.ps1))) -SkillOnly
 ```
 
 ## Install With Homebrew

@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/SSYCloud/batchjob-agent-kit/cli/internal/version"
+	"github.com/SSYCloud/AssembleFlow/cli/internal/version"
 	"github.com/spf13/cobra"
 )
 

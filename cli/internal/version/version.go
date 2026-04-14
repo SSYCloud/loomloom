@@ -17,7 +17,7 @@ var (
 )
 
 const (
-	repoOwnerRepo      = "SSYCloud/batchjob-agent-kit"
+	repoOwnerRepo      = "SSYCloud/AssembleFlow"
 	defaultReleaseAPI  = "https://api.github.com/repos/" + repoOwnerRepo + "/releases/latest"
 	defaultHTTPTimeout = 5 * time.Second
 )

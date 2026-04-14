@@ -1,4 +1,4 @@
-module github.com/SSYCloud/batchjob-agent-kit/cli
+module github.com/SSYCloud/AssembleFlow/cli
 
 go 1.24.6
 

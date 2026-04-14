@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REPO="SSYCloud/batchjob-agent-kit"
+REPO="SSYCloud/AssembleFlow"
 VERSION="${VERSION:-latest}"
 AGENT="codex"
 INSTALL_DIR="${INSTALL_DIR:-$HOME/.local/bin}"
@@ -168,7 +168,7 @@ else
   BASE_URL="https://github.com/${REPO}/releases/download/${TAG}"
 fi
 
-echo "batchjob-agent-kit installer"
+echo "AssembleFlow installer"
 echo "repo: $REPO"
 echo "version: $TAG"
 echo "agent: $AGENT"

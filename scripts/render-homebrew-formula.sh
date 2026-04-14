@@ -63,25 +63,25 @@ linux_amd64_sha="$(checksum_for "batchjob-cli-linux-amd64.tar.gz")"
 cat <<EOF
 class BatchjobCli < Formula
   desc "Developer CLI for hosted BatchJob skills"
-  homepage "https://github.com/SSYCloud/batchjob-agent-kit"
+  homepage "https://github.com/SSYCloud/AssembleFlow"
   version "$version"
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/SSYCloud/batchjob-agent-kit/releases/download/$tag/batchjob-cli-darwin-arm64.tar.gz"
+      url "https://github.com/SSYCloud/AssembleFlow/releases/download/$tag/batchjob-cli-darwin-arm64.tar.gz"
       sha256 "$darwin_arm64_sha"
     else
-      url "https://github.com/SSYCloud/batchjob-agent-kit/releases/download/$tag/batchjob-cli-darwin-amd64.tar.gz"
+      url "https://github.com/SSYCloud/AssembleFlow/releases/download/$tag/batchjob-cli-darwin-amd64.tar.gz"
       sha256 "$darwin_amd64_sha"
     end
   end
 
   on_linux do
     if Hardware::CPU.arm?
-      url "https://github.com/SSYCloud/batchjob-agent-kit/releases/download/$tag/batchjob-cli-linux-arm64.tar.gz"
+      url "https://github.com/SSYCloud/AssembleFlow/releases/download/$tag/batchjob-cli-linux-arm64.tar.gz"
       sha256 "$linux_arm64_sha"
     else
-      url "https://github.com/SSYCloud/batchjob-agent-kit/releases/download/$tag/batchjob-cli-linux-amd64.tar.gz"
+      url "https://github.com/SSYCloud/AssembleFlow/releases/download/$tag/batchjob-cli-linux-amd64.tar.gz"
       sha256 "$linux_amd64_sha"
     end
   end

@@ -4,8 +4,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/SSYCloud/batchjob-agent-kit/cli/internal/client"
-	"github.com/SSYCloud/batchjob-agent-kit/cli/internal/version"
+	"github.com/SSYCloud/AssembleFlow/cli/internal/client"
+	"github.com/SSYCloud/AssembleFlow/cli/internal/version"
 	"github.com/spf13/cobra"
 )
 
