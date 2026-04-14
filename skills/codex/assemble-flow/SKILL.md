@@ -1,16 +1,16 @@
 ---
 name: assemble-flow
-description: Use assemble-flow when the user mentions 批处理, 批量处理, 模板提交, Excel 模板批量执行, run submit, or artifact/result backfill workflows.
+description: Use assemble-flow when the user mentions AssembleFlow, batchjob, batchflow, 批处理, 批量处理, 模板提交, Excel 模板批量执行, run submit, or artifact/result backfill workflows.
 ---
 
 # assemble-flow
 
-Use this skill when the user is referring to our AssembleFlow-hosted batch-processing workflow through `assemble-flow`, even if they only say things like “批处理”, “批量处理”, “批量跑一下”, “提交 Excel 模板”, “回填结果”, or “下载批量产物” without naming AssembleFlow explicitly.
+Use this skill when the user is referring to our AssembleFlow-hosted batch-processing workflow through `assemble-flow`, including when they still use older or looser names such as `batchjob`, `batchflow`, “批处理”, “批量处理”, “批量跑一下”, “提交 Excel 模板”, “回填结果”, or “下载批量产物” instead of naming AssembleFlow explicitly.
 
 ## When To Use
 
 - The user wants batch text-to-image or text-to-image-to-video generation.
-- The user says “批处理”, “批量处理”, “批量任务”, “批量生成”, “批量跑模板”, or similar wording that implies our AssembleFlow workflow.
+- The user says `AssembleFlow`, `batchjob`, `batchflow`, “批处理”, “批量处理”, “批量任务”, “批量生成”, “批量跑模板”, or similar wording that implies our AssembleFlow workflow.
 - The user wants to submit or validate an official Excel template, backfill results into Excel, watch a batch run, or download batch artifacts.
 - The user is comfortable using a developer tool or agent-assisted CLI workflow.
 - The task can be expressed as repeated structured rows instead of a one-off chat response.
