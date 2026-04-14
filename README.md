@@ -8,7 +8,9 @@ Public distribution repository for:
 - examples
 - release workflows
 
-This repository is the public delivery surface for developers and agents to use hosted BatchJob skills.
+This repository is the public delivery surface for developers and agents to use hosted AssembleFlow workflows and skill packs.
+
+`batchjob`, `batchflow`, and related “批处理” wording are treated as historical or shorthand aliases for AssembleFlow in this repository, its skill packs, and its CLI guidance.
 
 ## Current MVP
 
@@ -35,6 +37,8 @@ Authentication is environment-variable based:
 export BATCHJOB_SERVER="https://batchjob-test.shengsuanyun.com/batch"
 export BATCHJOB_TOKEN="your-token"
 ```
+
+The environment variables still use the legacy `BATCHJOB_*` names for compatibility.
 
 ## Install From GitHub Release
 
@@ -199,7 +203,7 @@ For official templates, the default workflow is Excel:
 ```
 
 `template submit-file` uploads the filled workbook and directly creates a run.
-`template backfill-results` keeps `__batchjob_meta` intact, fetches run artifacts, and by default writes result columns back into the same workbook file. Use `--output-file` only when you explicitly want a separate workbook copy.
+`template backfill-results` keeps `__batchjob_meta` intact for backward compatibility, fetches run artifacts, and by default writes result columns back into the same workbook file. Use `--output-file` only when you explicitly want a separate workbook copy.
 
 ## Input File Format
 

@@ -1,6 +1,6 @@
 {
   "name": "AssembleFlow",
-  "description": "Public distribution manifest for batchjob CLI and agent skills for 批处理, 批量模板提交, Excel 模板执行, and 结果回填 workflows",
+  "description": "Public distribution manifest for the AssembleFlow CLI and agent skills for AssembleFlow, batchjob, batchflow, 批处理, 批量模板提交, Excel 模板执行, and 结果回填 workflows",
   "version": "0.1.0-mvp",
   "cli": {
     "name": "assemble-flow",

@@ -127,7 +127,7 @@ func (r *submitTemplateFileResponse) UnmarshalJSON(data []byte) error {
 func newTemplateCmd(opts *rootOptions) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "template",
-		Short: "Discover hosted BatchJob templates",
+		Short: "Discover hosted AssembleFlow templates",
 	}
 
 	cmd.AddCommand(

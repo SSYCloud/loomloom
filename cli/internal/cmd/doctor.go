@@ -17,7 +17,7 @@ type healthResponse struct {
 func newDoctorCmd(opts *rootOptions) *cobra.Command {
 	return &cobra.Command{
 		Use:   "doctor",
-		Short: "Check BatchJob server reachability and token wiring",
+		Short: "Check AssembleFlow server reachability and token wiring",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			httpClient, err := newHTTPClient(opts)
 			if err != nil {
