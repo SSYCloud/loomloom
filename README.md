@@ -3,10 +3,7 @@
 # LoomLoom
 
 > **批量内容生成平台** —— 用自然语言驱动 AI，批量完成文案、图片、视频生成任务。
-
-
 > 由胜算云出品 · [github.com/SSYCloud/loomloom](http://github.com/SSYCloud/loomloom)
-
 
 ---
 
@@ -66,7 +63,6 @@ curl -fsSL https://raw.githubusercontent.com/SSYCloud/loomloom/main/install.sh |
 
 > 如果系统有 Homebrew，安装脚本会优先使用 Homebrew 安装 CLI；可加 `--no-brew` 改用二进制包。
 
-
 **Windows（PowerShell）：**
 
 ```powershell
@@ -82,7 +78,6 @@ irm https://raw.githubusercontent.com/SSYCloud/loomloom/main/install.ps1 | iex
 
 > Windows 默认安装路径：`$HOME\AppData\Local\Programs\loomloom`，若未自动加入 PATH，请手动添加。
 
-
 **Homebrew（仅 CLI）：**
 
 ```bash
@@ -90,7 +85,6 @@ brew install ssycloud/tap/loomloom
 ```
 
 > 注意：Homebrew 仅安装 CLI，不含技能包。如需技能包请使用上方安装脚本。
-
 
 ---
 
@@ -102,7 +96,6 @@ export LOOMLOOM_TOKEN="your-token"
 ```
 
 > 建议写入 `~/.zshrc` 或 `~/.bashrc`，避免每次重新设置。CLI 仍兼容旧的 `BATCHJOB_SERVER` / `BATCHJOB_TOKEN`，但新配置建议统一使用 `LOOMLOOM_*`。Token 请在胜算云官网申请（[https://console.shengsuanyun.com/user/keys](https://console.shengsuanyun.com/user/keys)）。
-
 
 ---
 
@@ -123,9 +116,6 @@ loomloom doctor
 | `text-v1` | 文案写作、改写、摘要、问答、代码审查 | 📄 文本 / 文件 | 1 步：文本生成 |
 | `text-image-v1` | 插画、概念图、社媒配图 | 🖼️ 图片 | 2 步：提示词整理 → 出图 |
 | `text-image-video-v1` | 短剧、广告视频批量制作 | 🖼️ 图片 + 🎬 视频 | 3 步：描述 → 出图 → 出视频 |
-
----
-
 
 ## 🔄 标准工作流（Excel 模板）
 
@@ -267,7 +257,8 @@ Mac 用户按 `Command + 空格` 搜索「终端」；Windows 用户按 `Win 键
 
 **Q：`template list` 显示 no templates 怎么办？**
 
-当前环境尚未导入模板，联系胜算云管理员处理即可。
+`no templates` 是旧版本里的历史提示，这个提示现在已经去除了。
+如果 `loomloom template list` 没有返回任何模板，通常表示当前账号或环境下暂无可见模板，联系胜算云管理员确认模板发布状态或权限配置即可。
 
 **Q：可以不用 AI，手动操作吗？**
 
