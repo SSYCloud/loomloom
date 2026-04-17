@@ -267,8 +267,7 @@ Mac 用户按 `Command + 空格` 搜索「终端」；Windows 用户按 `Win 键
 
 **Q：`template list` 显示 no templates 怎么办？**
 
-`no templates` 是旧版本里的历史提示，这个提示现在已经去除了。
-如果 `loomloom template list` 没有返回任何模板，通常表示当前账号或环境下暂无可见模板，联系胜算云管理员确认模板发布状态或权限配置即可。
+当前环境尚未导入模板，联系胜算云管理员处理即可。
 
 **Q：可以不用 AI，手动操作吗？**
 

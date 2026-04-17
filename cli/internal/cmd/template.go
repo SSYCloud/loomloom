@@ -165,6 +165,7 @@ func newTemplateListCmd(opts *rootOptions) *cobra.Command {
 			}
 
 			if len(resp.Templates) == 0 {
+				_, _ = fmt.Fprintln(cmd.OutOrStdout(), "no templates")
 				return nil
 			}
 			for _, tmpl := range resp.Templates {
