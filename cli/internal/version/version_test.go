@@ -33,6 +33,27 @@ func TestCompareVersions(t *testing.T) {
 	}
 }
 
+func TestReleaseChannel(t *testing.T) {
+	tests := []struct {
+		version string
+		want    string
+	}{
+		{version: "v1.1.0", want: "stable"},
+		{version: "v1.1.0-beta.1", want: "beta"},
+		{version: "v1.1.0-rc.1", want: "rc"},
+		{version: "v1.1.0-internal.1", want: "internal"},
+		{version: "v1.1.0-preview.1", want: "prerelease"},
+		{version: "dev", want: "dev"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.version, func(t *testing.T) {
+			if got := ReleaseChannel(tt.version); got != tt.want {
+				t.Fatalf("ReleaseChannel(%q)=%q want %q", tt.version, got, tt.want)
+			}
+		})
+	}
+}
+
 func TestCheckLatest(t *testing.T) {
 	origVersion := Version
 	t.Cleanup(func() {
@@ -58,6 +79,12 @@ func TestCheckLatest(t *testing.T) {
 	}
 	if status.LatestVersion != "v0.1.5" {
 		t.Fatalf("LatestVersion=%q", status.LatestVersion)
+	}
+	if status.CurrentChannel != "stable" {
+		t.Fatalf("CurrentChannel=%q", status.CurrentChannel)
+	}
+	if status.LatestChannel != "stable" {
+		t.Fatalf("LatestChannel=%q", status.LatestChannel)
 	}
 	if !status.UpdateAvailable {
 		t.Fatalf("UpdateAvailable=false, want true")

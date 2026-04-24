@@ -34,12 +34,16 @@ func newDoctorCmd(opts *rootOptions) *cobra.Command {
 			versionStatus, versionErr := version.CheckLatest(ctx)
 			currentVersion := version.Version
 			latestVersion := ""
+			currentChannel := version.ReleaseChannel(currentVersion)
+			latestChannel := ""
 			updateAvailable := false
 			upgradeHint := ""
 			versionCheckError := ""
 			if versionStatus != nil {
 				currentVersion = versionStatus.CurrentVersion
 				latestVersion = versionStatus.LatestVersion
+				currentChannel = versionStatus.CurrentChannel
+				latestChannel = versionStatus.LatestChannel
 				updateAvailable = versionStatus.UpdateAvailable
 				upgradeHint = versionStatus.UpgradeHint
 			}
@@ -54,7 +58,9 @@ func newDoctorCmd(opts *rootOptions) *cobra.Command {
 					"healthy":             resp.Healthy,
 					"message":             resp.Message,
 					"cli_version":         currentVersion,
+					"release_channel":     currentChannel,
 					"latest_release":      latestVersion,
+					"latest_channel":      latestChannel,
 					"update_available":    updateAvailable,
 					"upgrade_hint":        upgradeHint,
 					"version_check_error": versionCheckError,
@@ -70,8 +76,10 @@ func newDoctorCmd(opts *rootOptions) *cobra.Command {
 			_, _ = fmt.Fprintf(cmd.OutOrStdout(), "healthy: %t\n", resp.Healthy)
 			_, _ = fmt.Fprintf(cmd.OutOrStdout(), "message: %s\n", resp.Message)
 			_, _ = fmt.Fprintf(cmd.OutOrStdout(), "cli_version: %s\n", currentVersion)
+			_, _ = fmt.Fprintf(cmd.OutOrStdout(), "release_channel: %s\n", currentChannel)
 			if latestVersion != "" {
 				_, _ = fmt.Fprintf(cmd.OutOrStdout(), "latest_release: %s\n", latestVersion)
+				_, _ = fmt.Fprintf(cmd.OutOrStdout(), "latest_channel: %s\n", latestChannel)
 			}
 			if upgradeHint != "" {
 				_, _ = fmt.Fprintf(cmd.OutOrStdout(), "notice: %s\n", upgradeHint)

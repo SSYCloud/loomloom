@@ -17,6 +17,8 @@ Use this skill when the user is referring to our LoomLoom-hosted batch-processin
 
 ## First Steps
 
+0. If the user asks for an internal-test CLI build, install an explicit release channel instead of default stable:
+   `curl -fsSL https://raw.githubusercontent.com/SSYCloud/loomloom/main/install.sh | bash -s -- --channel beta --no-brew`
 1. Ensure:
    `LOOMLOOM_SERVER`
    `LOOMLOOM_TOKEN`

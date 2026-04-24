@@ -26,6 +26,8 @@ const (
 type Status struct {
 	CurrentVersion  string
 	LatestVersion   string
+	CurrentChannel  string
+	LatestChannel   string
 	UpdateAvailable bool
 	UpgradeHint     string
 }
@@ -44,12 +46,14 @@ func CheckLatest(ctx context.Context) (*Status, error) {
 	if status.CurrentVersion == "" {
 		status.CurrentVersion = "dev"
 	}
+	status.CurrentChannel = ReleaseChannel(status.CurrentVersion)
 
 	latest, err := fetchLatestVersion(ctx, releaseAPIURL())
 	if err != nil {
 		return status, err
 	}
 	status.LatestVersion = latest
+	status.LatestChannel = ReleaseChannel(latest)
 
 	switch compareVersions(status.CurrentVersion, latest) {
 	case -1:
@@ -63,6 +67,23 @@ func CheckLatest(ctx context.Context) (*Status, error) {
 	}
 
 	return status, nil
+}
+
+func ReleaseChannel(raw string) string {
+	parsed, ok := parseSemver(raw)
+	if !ok {
+		return "dev"
+	}
+	if parsed.prerelease == "" {
+		return "stable"
+	}
+	channel := strings.Split(parsed.prerelease, ".")[0]
+	switch channel {
+	case "beta", "rc", "internal":
+		return channel
+	default:
+		return "prerelease"
+	}
 }
 
 func releaseAPIURL() string {

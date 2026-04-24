@@ -23,6 +23,8 @@ Use this skill when the user is referring to our LoomLoom-hosted batch-processin
 
 ## Command Pattern
 
+0. If the user asks for an internal-test CLI build, install an explicit release channel instead of default stable:
+   `curl -fsSL https://raw.githubusercontent.com/SSYCloud/loomloom/main/install.sh | bash -s -- --channel beta --no-brew`
 1. Check environment:
    `loomloom doctor`
 2. Upload reusable raw input files when the local file is large and should not be pasted into agent context:

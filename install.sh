@@ -3,6 +3,7 @@ set -euo pipefail
 
 REPO="SSYCloud/loomloom"
 VERSION="${VERSION:-latest}"
+CHANNEL="${CHANNEL:-stable}"
 AGENT="codex"
 INSTALL_DIR="${INSTALL_DIR:-$HOME/.local/bin}"
 SKILL_DIR="${SKILL_DIR:-}"
@@ -17,6 +18,8 @@ Options:
   --install-dir <path>     Directory for loomloom (default: ~/.local/bin)
   --skill-dir <path>       Override the destination directory for SKILL.md
   --version <tag|latest>   GitHub release tag to install (default: latest)
+  --channel <stable|beta|rc|internal>
+                            Release channel to resolve when --version is latest (default: stable)
   --no-brew                Force GitHub Release install even if Homebrew is available
   --help                   Show this help text
 EOF
@@ -38,6 +41,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --version)
       VERSION="${2:-latest}"
+      shift 2
+      ;;
+    --channel)
+      CHANNEL="${2:-stable}"
       shift 2
       ;;
     --no-brew)
@@ -62,6 +69,14 @@ case "$ARCH" in
   x86_64|amd64) ARCH="amd64" ;;
   *)
     echo "unsupported architecture: $ARCH" >&2
+    exit 1
+    ;;
+esac
+
+case "$CHANNEL" in
+  stable|beta|rc|internal) ;;
+  *)
+    echo "unsupported release channel: $CHANNEL" >&2
     exit 1
     ;;
 esac
@@ -102,6 +117,10 @@ resolve_tag() {
     printf '%s\n' "$VERSION"
     return
   fi
+  if [[ "$CHANNEL" != "stable" ]]; then
+    resolve_prerelease_tag "$CHANNEL"
+    return
+  fi
   local api_url="https://api.github.com/repos/${REPO}/releases/latest"
   local tag
   tag="$(
@@ -116,9 +135,27 @@ resolve_tag() {
   printf '%s\n' "$tag"
 }
 
+resolve_prerelease_tag() {
+  local channel="$1"
+  local api_url="https://api.github.com/repos/${REPO}/releases?per_page=100"
+  local tag
+  tag="$(
+    curl -fsSL "$api_url" \
+      | sed -n 's/^[[:space:]]*"tag_name":[[:space:]]*"\([^"]*\)".*/\1/p' \
+      | grep -E "^v[0-9]+\\.[0-9]+\\.[0-9]+-${channel}\\.[0-9]+$" \
+      | head -n1
+  )"
+  if [[ -z "$tag" ]]; then
+    echo "failed to resolve latest $channel release tag from $api_url" >&2
+    exit 1
+  fi
+  printf '%s\n' "$tag"
+}
+
 can_use_homebrew() {
   [[ "$USE_HOMEBREW" != "never" ]] || return 1
   [[ "$VERSION" == "latest" ]] || return 1
+  [[ "$CHANNEL" == "stable" ]] || return 1
   case "$OS" in
     darwin|linux) ;;
     *) return 1 ;;
@@ -174,6 +211,7 @@ fi
 echo "LoomLoom installer"
 echo "repo: $REPO"
 echo "version: $TAG"
+echo "channel: $CHANNEL"
 echo "agent: $AGENT"
 if can_use_homebrew; then
   echo "cli install: homebrew"

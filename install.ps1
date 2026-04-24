@@ -2,7 +2,9 @@ param(
   [string]$Agent = "codex",
   [string]$InstallDir = "$HOME\AppData\Local\Programs\loomloom",
   [string]$SkillDir = "",
-  [string]$Version = "latest"
+  [string]$Version = "latest",
+  [ValidateSet("stable", "beta", "rc", "internal")]
+  [string]$Channel = "stable"
 )
 
 $ErrorActionPreference = "Stop"
@@ -22,8 +24,15 @@ function Resolve-SkillDir {
 }
 
 function Resolve-Tag {
-  param([string]$Requested)
+  param([string]$Requested, [string]$ChannelName)
   if ($Requested -ne "latest") { return $Requested }
+  if ($ChannelName -ne "stable") {
+    $releases = Invoke-RestMethod -Uri "$ApiBase/releases?per_page=100" -Headers @{ Accept = "application/vnd.github+json"; "User-Agent" = "loomloom-installer" }
+    $pattern = "^v[0-9]+\.[0-9]+\.[0-9]+-$ChannelName\.[0-9]+$"
+    $release = @($releases | Where-Object { $_.prerelease -and $_.tag_name -match $pattern } | Select-Object -First 1)
+    if (-not $release -or -not $release[0].tag_name) { throw "failed to resolve latest $ChannelName release tag" }
+    return [string]$release[0].tag_name
+  }
   $resp = Invoke-RestMethod -Uri "$ApiBase/releases/latest" -Headers @{ Accept = "application/vnd.github+json"; "User-Agent" = "loomloom-installer" }
   if (-not $resp.tag_name) { throw "failed to resolve latest release tag" }
   return [string]$resp.tag_name
@@ -60,7 +69,7 @@ $arch = switch ($env:PROCESSOR_ARCHITECTURE.ToLowerInvariant()) {
   default { throw "unsupported architecture: $env:PROCESSOR_ARCHITECTURE" }
 }
 
-$tag = Resolve-Tag -Requested $Version
+$tag = Resolve-Tag -Requested $Version -ChannelName $Channel
 $cliAsset = "loomloom-windows-$arch.zip"
 $skillsAsset = "loomloom-skills.zip"
 $checksumsAsset = "checksums.txt"
@@ -76,6 +85,7 @@ try {
   Write-Host "LoomLoom installer"
   Write-Host "repo: $Repo"
   Write-Host "version: $tag"
+  Write-Host "channel: $Channel"
   Write-Host "agent: $Agent"
   Write-Host "install dir: $InstallDir"
   Write-Host "skill dir: $(Resolve-SkillDir -AgentName $Agent -Override $SkillDir)"
