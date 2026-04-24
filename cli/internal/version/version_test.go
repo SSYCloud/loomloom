@@ -18,6 +18,10 @@ func TestCompareVersions(t *testing.T) {
 		{name: "older", current: "v0.1.4", latest: "v0.1.5", want: -1},
 		{name: "equal", current: "v0.1.5", latest: "v0.1.5", want: 0},
 		{name: "newer", current: "v0.1.6", latest: "v0.1.5", want: 1},
+		{name: "prerelease behind stable", current: "v1.1.0-beta.1", latest: "v1.1.0", want: -1},
+		{name: "stable ahead of prerelease", current: "v1.1.0", latest: "v1.1.0-rc.1", want: 1},
+		{name: "newer prerelease", current: "v1.1.0-beta.2", latest: "v1.1.0-beta.1", want: 1},
+		{name: "prerelease ahead of older stable", current: "v1.1.0-beta.1", latest: "v1.0.0", want: 1},
 		{name: "dev fallback", current: "dev", latest: "v0.1.5", want: -1},
 	}
 	for _, tt := range tests {

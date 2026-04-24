@@ -61,9 +61,13 @@ curl -fsSL https://raw.githubusercontent.com/SSYCloud/loomloom/main/install.sh |
 
 # 指定版本
 curl -fsSL https://raw.githubusercontent.com/SSYCloud/loomloom/main/install.sh | bash -s -- --version v0.1.0
+
+# 内测版本（必须显式指定 pre-release tag）
+curl -fsSL https://raw.githubusercontent.com/SSYCloud/loomloom/main/install.sh | bash -s -- --version v1.1.0-beta.1 --no-brew
 ```
 
 > 如果系统有 Homebrew，安装脚本会优先使用 Homebrew 安装 CLI；可加 `--no-brew` 改用二进制包。
+> `latest` 和 Homebrew 只面向正式版本；`beta` / `rc` / `internal` 内测版本需要通过 `--version` 显式安装。
 
 **Windows（PowerShell）：**
 
@@ -76,6 +80,9 @@ irm https://raw.githubusercontent.com/SSYCloud/loomloom/main/install.ps1 | iex
 
 # OpenClaw 用户
 & ([scriptblock]::Create((irm https://raw.githubusercontent.com/SSYCloud/loomloom/main/install.ps1))) -Agent openclaw
+
+# 内测版本（必须显式指定 pre-release tag）
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/SSYCloud/loomloom/main/install.ps1))) -Version v1.1.0-beta.1
 ```
 
 > Windows 默认安装路径：`$HOME\AppData\Local\Programs\loomloom`，若未自动加入 PATH，请手动添加。

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -31,6 +32,11 @@ type Status struct {
 
 type latestReleaseResponse struct {
 	TagName string `json:"tag_name"`
+}
+
+type semverVersion struct {
+	core       [3]int
+	prerelease string
 }
 
 func CheckLatest(ctx context.Context) (*Status, error) {
@@ -100,45 +106,95 @@ func fetchLatestVersion(ctx context.Context, apiURL string) (string, error) {
 }
 
 func compareVersions(current, latest string) int {
-	cur, okCur := parseVersion(current)
-	lat, okLat := parseVersion(latest)
+	cur, okCur := parseSemver(current)
+	lat, okLat := parseSemver(latest)
 	if !okCur || !okLat {
 		return strings.Compare(current, latest)
 	}
-	for i := 0; i < len(cur) && i < len(lat); i++ {
-		if cur[i] < lat[i] {
+	for i := 0; i < len(cur.core); i++ {
+		if cur.core[i] < lat.core[i] {
 			return -1
 		}
-		if cur[i] > lat[i] {
+		if cur.core[i] > lat.core[i] {
 			return 1
 		}
 	}
-	if len(cur) < len(lat) {
+
+	switch {
+	case cur.prerelease == "" && lat.prerelease != "":
+		return 1
+	case cur.prerelease != "" && lat.prerelease == "":
+		return -1
+	case cur.prerelease != "" && lat.prerelease != "":
+		return comparePrerelease(cur.prerelease, lat.prerelease)
+	default:
+		return 0
+	}
+}
+
+var semverPattern = regexp.MustCompile(`^v?([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9A-Za-z.-]+))?$`)
+
+func parseSemver(raw string) (semverVersion, bool) {
+	raw = strings.TrimSpace(raw)
+	matches := semverPattern.FindStringSubmatch(raw)
+	if matches == nil {
+		return semverVersion{}, false
+	}
+	var out semverVersion
+	for i := 0; i < 3; i++ {
+		num, err := strconv.Atoi(matches[i+1])
+		if err != nil {
+			return semverVersion{}, false
+		}
+		out.core[i] = num
+	}
+	out.prerelease = matches[4]
+	return out, true
+}
+
+func comparePrerelease(current, latest string) int {
+	curParts := strings.Split(current, ".")
+	latParts := strings.Split(latest, ".")
+	for i := 0; i < len(curParts) && i < len(latParts); i++ {
+		cmp := comparePrereleaseIdentifier(curParts[i], latParts[i])
+		if cmp != 0 {
+			return cmp
+		}
+	}
+	if len(curParts) < len(latParts) {
 		return -1
 	}
-	if len(cur) > len(lat) {
+	if len(curParts) > len(latParts) {
 		return 1
 	}
 	return 0
 }
 
-func parseVersion(raw string) ([]int, bool) {
-	raw = strings.TrimSpace(raw)
-	raw = strings.TrimPrefix(raw, "v")
+func comparePrereleaseIdentifier(current, latest string) int {
+	curNum, curIsNum := parseNumericIdentifier(current)
+	latNum, latIsNum := parseNumericIdentifier(latest)
+	switch {
+	case curIsNum && latIsNum:
+		if curNum < latNum {
+			return -1
+		}
+		if curNum > latNum {
+			return 1
+		}
+		return 0
+	case curIsNum:
+		return -1
+	case latIsNum:
+		return 1
+	default:
+		return strings.Compare(current, latest)
+	}
+}
+
+func parseNumericIdentifier(raw string) (int, bool) {
 	if raw == "" {
-		return nil, false
+		return 0, false
 	}
-	parts := strings.Split(raw, ".")
-	out := make([]int, 0, len(parts))
-	for _, part := range parts {
-		if part == "" {
-			return nil, false
-		}
-		num, err := strconv.Atoi(part)
-		if err != nil {
-			return nil, false
-		}
-		out = append(out, num)
-	}
-	return out, true
+	num, err := strconv.Atoi(raw)
+	return num, err == nil
 }
