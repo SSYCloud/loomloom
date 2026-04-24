@@ -221,6 +221,39 @@ loomloom input-asset upload ./diagram.png --content-type image/png
 | `loomloom artifact list <run-id>` | 查看生成文件列表 |
 | `loomloom artifact download <run-id>` | 下载所有生成文件 |
 | `loomloom input-asset upload <file>` | 上传大文件获取 ID |
+| `loomloom template-spec check <spec.json>` | 检查自定义模板 JSON |
+| `loomloom template-spec create <spec.json>` | 创建私有模板并保存版本 |
+| `loomloom template-spec download-workbook <template-id> <version-id>` | 下载用户模板 Excel |
+| `loomloom template-spec validate-workbook <template-id> <version-id> <xlsx>` | 校验用户模板 Excel |
+| `loomloom template-spec submit-workbook <template-id> <version-id> <xlsx>` | 提交用户模板 Excel |
+
+## 🧩 自定义模板（Agent / 开发者）
+
+自定义模板使用 `TemplateSpec JSON` 描述模板步骤、输入字段和字段绑定关系。第一版推荐由 agent 或开发者生成 JSON，再通过 CLI 创建模板版本。
+
+```bash
+# 1. 本地检查 JSON 基本结构
+loomloom template-spec check ./spec.json
+
+# 2. 创建私有模板并保存版本
+loomloom template-spec create ./spec.json --version-note "initial version"
+
+# 3. 下载该模板版本对应的 Excel workbook
+loomloom template-spec download-workbook <template-id> <version-id> --output-file ./input.xlsx
+
+# 4. 填写 Excel 后校验
+loomloom template-spec validate-workbook <template-id> <version-id> ./input.xlsx
+
+# 5. 提交运行
+loomloom template-spec submit-workbook <template-id> <version-id> ./input.xlsx
+```
+
+注意：
+
+- `TemplateSpec JSON` 是模板主数据，Excel workbook 是派生文件。
+- 模板版本变化后，应重新下载 workbook。
+- 只有 step 明确开放模型覆盖时，workbook 中才会出现该步骤的模型选择列。
+- `submit-workbook` 会创建真实批量任务，使用 agent 操作时应先向用户确认。
 
 ---
 

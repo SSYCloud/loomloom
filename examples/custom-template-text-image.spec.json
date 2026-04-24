@@ -1,0 +1,124 @@
+{
+  "Meta": {
+    "Name": "商品图生成",
+    "Description": "根据商品信息批量生成图片",
+    "Scenario": "product-image",
+    "InputSummary": "商品名称、图片风格",
+    "DisplayOutputType": "图片",
+    "PrimaryOutputType": "image"
+  },
+  "Steps": [
+    {
+      "StepID": "stp_prompt",
+      "DisplayName": "提示词整理",
+      "ExecutionUnit": "text-generate",
+      "Instruction": "根据商品名称和风格要求整理图片提示词。",
+      "DefaultModelRef": {
+        "ModelKey": "google/gemini-2.5-flash"
+      },
+      "AllowModelOverride": true
+    },
+    {
+      "StepID": "stp_image",
+      "DisplayName": "图片生成",
+      "ExecutionUnit": "image-generate",
+      "Instruction": "根据整理后的提示词生成图片。",
+      "DependsOn": ["stp_prompt"],
+      "UpstreamBindings": [
+        {
+          "InputPort": "prompt",
+          "SourceType": "step_output",
+          "SourceStepID": "stp_prompt",
+          "SourcePort": "text"
+        }
+      ],
+      "DefaultModelRef": {
+        "ModelKey": "google/gemini-2.5-flash-image"
+      },
+      "AllowModelOverride": true,
+      "StaticParams": {
+        "aspect_ratio": "1:1"
+      }
+    }
+  ],
+  "InputSchema": {
+    "Fields": [
+      {
+        "Key": "product_name",
+        "Label": "商品名称",
+        "Required": true,
+        "ValueType": "string",
+        "Order": 1
+      },
+      {
+        "Key": "style",
+        "Label": "图片风格",
+        "ValueType": "enum",
+        "EnumValues": ["极简棚拍", "电商白底", "生活方式摄影"],
+        "Order": 2
+      },
+      {
+        "Key": "text_model",
+        "Label": "提示词整理模型（可选）",
+        "ValueType": "string",
+        "Order": 3
+      },
+      {
+        "Key": "image_model",
+        "Label": "图片生成模型（可选）",
+        "ValueType": "string",
+        "Order": 4
+      }
+    ],
+    "Instructions": [
+      "每行生成一张商品图。",
+      "模型列可留空，留空时使用模板默认模型。"
+    ],
+    "SampleRows": [
+      {
+        "product_name": "一盏未来感桌面台灯",
+        "style": "极简棚拍"
+      }
+    ]
+  },
+  "FieldBindings": [
+    {
+      "FieldKey": "text_model",
+      "StepID": "stp_prompt",
+      "ParamKey": "model",
+      "BindMode": "shared"
+    },
+    {
+      "FieldKey": "image_model",
+      "StepID": "stp_image",
+      "ParamKey": "model",
+      "BindMode": "shared"
+    }
+  ],
+  "ParamBindings": [
+    {
+      "StepID": "stp_prompt",
+      "ParamKey": "prompt",
+      "BindMode": "shared",
+      "Separator": " ",
+      "Sources": [
+        {
+          "Kind": "literal",
+          "Literal": "请根据以下商品生成图片提示词。商品："
+        },
+        {
+          "Kind": "field_ref",
+          "FieldKey": "product_name"
+        },
+        {
+          "Kind": "literal",
+          "Literal": "风格："
+        },
+        {
+          "Kind": "field_ref",
+          "FieldKey": "style"
+        }
+      ]
+    }
+  ]
+}

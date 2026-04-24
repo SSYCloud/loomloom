@@ -31,7 +31,13 @@ Use this skill when the user is referring to our LoomLoom-hosted batch-processin
    `loomloom template list`
 4. Inspect one template:
    `loomloom template schema <template-id>`
-6. Default to the official Excel workflow:
+5. For agent-authored custom templates, use TemplateSpec JSON:
+   `loomloom template-spec check <spec.json>`
+   `loomloom template-spec create <spec.json>`
+   `loomloom template-spec download-workbook <template-id> <version-id>`
+   `loomloom template-spec validate-workbook <template-id> <version-id> <xlsx-path>`
+   `loomloom template-spec submit-workbook <template-id> <version-id> <xlsx-path>`
+6. Default to the official Excel workflow when the user does not ask for custom template authoring:
    `loomloom template download <template-id>`
    `loomloom template validate-file <template-id> <xlsx-path>`
    `loomloom template submit-file <template-id> <xlsx-path>`
@@ -71,6 +77,7 @@ Treat the interaction as a simple three-state flow:
 This applies to:
 
 - `loomloom template submit-file <template-id> <xlsx-path>`
+- `loomloom template-spec submit-workbook <template-id> <version-id> <xlsx-path>`
 - `loomloom run submit <template-id> -f rows.jsonl`
 
 Do not silently submit just because the user asked for exploration, validation,
@@ -121,6 +128,11 @@ The public CLI MVP currently supports:
 - `loomloom template backfill-results <run-id> <xlsx-path>`
 - `loomloom template validate-file <template-id> <xlsx-path>`
 - `loomloom template submit-file <template-id> <xlsx-path>`
+- `loomloom template-spec check <spec.json>`
+- `loomloom template-spec create <spec.json>`
+- `loomloom template-spec download-workbook <template-id> <version-id>`
+- `loomloom template-spec validate-workbook <template-id> <version-id> <xlsx-path>`
+- `loomloom template-spec submit-workbook <template-id> <version-id> <xlsx-path>`
 - `loomloom run submit <template-id> -f rows.jsonl`
 - `loomloom run watch <run-id>`
 - `loomloom artifact list <run-id>`
@@ -143,9 +155,22 @@ will be added later.
 Unless the user explicitly asks for a JSON or JSONL workflow, default to the official
 Excel template workflow.
 
+When the user asks to create or customize a workflow/template, prefer the
+TemplateSpec JSON workflow. Treat `TemplateSpec JSON` as the source of truth and
+the downloaded workbook as a derived artifact. Do not promise old workbooks remain
+compatible after the template version changes; download a fresh workbook instead.
+
+TemplateSpec authoring guardrails:
+
+- Use `text-generate`, `image-generate`, or `video-generate` execution units unless the user has a documented custom unit.
+- Use canonical model IDs in `DefaultModelRef.ModelKey`.
+- Only expose a model column when the step has `AllowModelOverride=true` and a field binding to `ParamKey=model`.
+- Do not bind `provider` or `mode`; these routing controls are not exposed through templates.
+
 When using:
 
 - `loomloom template submit-file <template-id> <xlsx-path>`
+- `loomloom template-spec submit-workbook <template-id> <version-id> <xlsx-path>`
 - `loomloom template backfill-results <run-id> <xlsx-path>`
 
 assume the workbook itself is the source of truth. By default, `template backfill-results`

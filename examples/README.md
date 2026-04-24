@@ -6,12 +6,37 @@ If you still call the workflow `batchjob`, `batchflow`, or “批处理”, thos
 
 - `text-image-v1.input.jsonl`
 - `text-image-video-v1.input.jsonl`
+- `custom-template-text-image.spec.json`
 
 Use them with:
 
 ```bash
 ./cli/loomloom run submit text-image-v1 -f examples/text-image-v1.input.jsonl
 ./cli/loomloom run submit text-image-video-v1 -f examples/text-image-video-v1.input.jsonl
+```
+
+## Custom Template Spec
+
+`custom-template-text-image.spec.json` is a starter TemplateSpec for agent-authored
+private templates. It creates a two-step template:
+
+```text
+text-generate -> image-generate
+```
+
+Use it with:
+
+```bash
+./cli/loomloom template-spec check examples/custom-template-text-image.spec.json
+./cli/loomloom template-spec create examples/custom-template-text-image.spec.json --version-note "initial version"
+./cli/loomloom template-spec download-workbook <template-id> <version-id> --output-file ./custom-input.xlsx
+./cli/loomloom template-spec validate-workbook <template-id> <version-id> ./custom-input.xlsx
+```
+
+Submitting the workbook creates a real run:
+
+```bash
+./cli/loomloom template-spec submit-workbook <template-id> <version-id> ./custom-input.xlsx
 ```
 
 ## Code Review PoC

@@ -36,12 +36,16 @@ func NewRootCmd() *cobra.Command {
 	cmd.PersistentFlags().StringVarP(&opts.token, "token", "t", opts.token, "Bearer token")
 	cmd.PersistentFlags().DurationVar(&opts.timeout, "timeout", opts.timeout, "HTTP timeout")
 	cmd.PersistentFlags().StringVarP(&opts.output, "output", "o", opts.output, "Output format: text|json")
+	if tokenFlag := cmd.PersistentFlags().Lookup("token"); tokenFlag != nil {
+		tokenFlag.DefValue = ""
+	}
 
 	cmd.AddCommand(
 		newDoctorCmd(opts),
 		newInputAssetCmd(opts),
 		newRunCmd(opts),
 		newTemplateCmd(opts),
+		newTemplateSpecCmd(opts),
 		newArtifactCmd(opts),
 	)
 	return cmd
